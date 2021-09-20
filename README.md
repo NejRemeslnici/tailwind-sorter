@@ -66,7 +66,7 @@ There are two important places to configure in the YAML file:
   they will be ordered last in the particular group.
 
 Unknown (i.e. custom) classes will be **ordered first by default**. If you want them ordered last, replace
-the [`default_index`](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/bin/tailwind_sorter.rb#L20) parameter
+the [`default_index`](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/bin/tailwind_sorter.rb#L21) parameter
 in the script with a big-enough number. We recommend ordering custom classes first though as in our opinion such classes
 usually bear more important meanings than the Tailwind ones and this setup also makes it easier to spot typos in class
 names.
