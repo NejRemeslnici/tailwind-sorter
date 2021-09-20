@@ -81,8 +81,9 @@ the sections in the [official Tailwind documentation](https://tailwindcss.com/do
 
 The script works best if you only include the classes that you really use in your project. Once you grab all the classes
 e.g. from your production CSS bundle, you can partially reorder them e.g. using the following ruby snippet. Suppose you
-have the ”default“ classes sorted, on per line, in the `default_classes.txt` file and your own (unordered) classes
-in `our_classes.txt`. Then:
+have the ”default“ Tailwind classes sorted (taken e.g. from 
+[here](https://github.com/avencera/rustywind/blob/master/src/defaults.rs)), one per line, in
+the `default_classes.txt` file and your own (unordered) classes in `our_classes.txt`. Then the reordering could be along these lines:
 
 ```ruby
 head = File.readlines("default_classes.txt").map(&:strip)
