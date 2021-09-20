@@ -123,7 +123,7 @@ Have a look at [the wiki](https://github.com/NejRemeslnici/tailwind-sorter/wiki)
 
 ## Guarding sort order via Overcommit
 
-We use [Overcommit](https://github.com/sds/overcommit) to guard a common set of rules configured in our project upon
+We use [Overcommit](https://github.com/sds/overcommit) to guard a common set of rules configured in our project during
 each commit. Here, we provide
 a [simple pre-commit hook](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.git-hooks/pre_commit/check_css_classes_order.rb)
 and a sample
