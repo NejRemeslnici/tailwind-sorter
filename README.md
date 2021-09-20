@@ -119,8 +119,8 @@ We use [Overcommit](https://github.com/sds/overcommit) to guard a common set of 
 each commit. Here, we provide
 a [simple pre-commit hook](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.git-hooks/pre_commit/check_css_classes_order.rb)
 and a sample
-[configuration in the `.overcommit.yml` file](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.overcommit.yml). 
-The hook calls the Tailwind sorter with the `-w` argument, asking it to not change the file but only print the
+[configuration in the `.overcommit.yml` file](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.overcommit.yml#L31). 
+The hook calls Tailwind sorter with the `-w` argument, asking it to not change the file but only print the
 ordering problems found.
 
 ## Running tests
