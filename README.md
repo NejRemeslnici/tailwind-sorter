@@ -12,7 +12,7 @@ The script is a standalone command that can work in two ways:
 Out of the box the script supports sorting classes in [Slim templates](http://slim-lang.com/) but can be configured for
 anything else. The script also removes duplicate classes.
 
-_This is what it looks like when Tailwind sorter is auto-run when saving a changed template file in the RubyMine IDE:_
+_This is what it looks like when Tailwind sorter is auto-run upon saving a changed template file in the RubyMine IDE:_
 <img src="img/tailwind_sorter_intro.gif" alt="Automatically ordering CSS classes upon file saving"></img>
 
 Please read the accompanying article on dev.to for more details, if interested.
@@ -116,7 +116,7 @@ Perhaps the best way to run the script is using your editor or IDE. Many editors
 edited files and **run arbitrary command when they are changed / saved**.
 
 We use Tailwind sorter this way, the script is triggered by ”file watchers“ configured in RubyMine and it works great.
-Have a look at the wiki for a guide to set up such integration.
+Have a look at [the wiki](https://github.com/NejRemeslnici/tailwind-sorter/wiki) for a guide to set up such integration.
 
 ## Guarding sort order via Overcommit
 
