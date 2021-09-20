@@ -10,9 +10,9 @@ The script is a standalone command that can work in two ways:
   prefer).
 
 Out of the box the script supports sorting classes in [Slim templates](http://slim-lang.com/) but can be configured for
-anything else.
+anything else. The script also removes duplicate classes.
 
-Please read the article on dev.to for all details, if interested.
+Please read the accompanying article on dev.to for more details, if interested.
 
 ## Why?
 
