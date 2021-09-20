@@ -27,11 +27,13 @@ We are aware of the other good solutions to sorting Tailwind classes but we’ve
   Also, we like to sort our Tailwind classes a bit differently than Headwind et al. default to.
 
 In our opinion, especially since the [JIT mode](https://tailwindcss.com/docs/just-in-time-mode) has been introduced to
-Tailwind, sorters operating over a huge static list of "default" classes are becoming less useful as each developer will
-inevitably come to their **own unique set of classes** that is almost impossible to hard-wire.
+Tailwind, sorters operating over a huge static list of "default" pre-ordered classes are becoming less useful as each
+developer will inevitably come to their **own unique set of classes** making it almost impossible to hard-wire a common
+solution. This problem is even larger if you’ve added
+[custom utility classes](https://tailwindcss.com/docs/adding-new-utilities) to your project.
 
 Above all, it is **surprisingly easy** to create a custom sorting script – the one we use and present here is only
-~110 lines. So, take this script and config as a **template for you to revise and amend**.
+~110 lines. So, take this script and config as a **template for you to revise and adopt**.
 
 ## Installation
 
@@ -44,45 +46,82 @@ be [tweaked in the script](https://github.com/NejRemeslnici/tailwind-sorter/blob
 
 The script has **no dependencies**, apart from ruby (tested on ruby 2.6+) and its stdlib.
 
-There are currently no plans to make this a gem as the code and especially the configuration is expected to be
+There are currently **no plans to make this a gem** as the code and especially the configuration is expected to be
 customized to fully suit your needs and we are not ready to support a generic tool with defaults for everyone.
 
 ## Configuration
 
-Without customizing, the script will – somehow – work but its full potential will be used only when properly configured.
+Without customizing, the script will – somehow – work but its full potential will be available only when properly
+configured.
 
 There are two important places to configure in the YAML file:
 
 - **regular expressions** to match the classes in your files: out of the box, the script matches classes in the Slim
-  format (`section#flash-messages.hidden.mt-4`) and classes in the context of the `class` attribute in ruby / Rails
-  helpers (`link_to "E-shop", buy_path, class: "no-underline font-bold fg-red")`,
+  format (such as `section#flash-messages.hidden.mt-4`) and classes in the context of the `class` attribute in ruby /
+  Rails helpers (`link_to "E-shop", eshop_path, class: "no-underline font-bold red-100")`,
+
 - **CSS classes order and grouping**: the `classes_order` section in the YAML file determines the order in which the
-  classes will be sorted. If you want the Tailwind variants (such as `hover:` etc.) to always be ordered towards the end
-  of line, put the classes in one big group, otherwise split them into any groups you need and they will be ordered last
-  in the particular group.
+  classes will be sorted. If you want the classes with Tailwind variants (such as `sm:`, `hover:` etc.) to always be
+  ordered towards the end of line, put the classes in one big group, otherwise split them into any groups you want and
+  they will be ordered last in the particular group.
 
 Unknown (i.e. custom) classes will be **ordered first by default**. If you want them ordered last, replace
 the [`default_index`](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/bin/tailwind_sorter.rb#L20) parameter
 in the script with a big-enough number.
 
-The default sort order of the classes resembles the one of Headwind which, in turn, was inspired by the order of the 
+The default sort order of the classes resembles the one of Headwind which, in turn, was inspired by the order of the
 sections in the [official Tailwind documentation](https://tailwindcss.com/docs).
 
-### Using your unique set of Tailwind classes
+### Adding your unique set of Tailwind classes
 
-The script works best if you only include the classes that you really use in your project. Once you grab all the classes 
-e.g. from your production CSS bundle, you can partially reorder them e.g. using the following ruby snippet. Suppose you 
-have the ”default“ classes, on per line, in the `default_classes.txt` file and your own classes set in `our_classes.txt`. Then:
+The script works best if you only include the classes that you really use in your project. Once you grab all the classes
+e.g. from your production CSS bundle, you can partially reorder them e.g. using the following ruby snippet. Suppose you
+have the ”default“ classes sorted, on per line, in the `default_classes.txt` file and your own (unordered) classes
+in `our_classes.txt`. Then:
 
 ```ruby
 head = File.readlines("default_classes.txt").map(&:strip)
 our = File.readlines("our_classes.txt").map(&:strip)
-sorted_classes = our.sort_by { |word| head.index(word) || 10000 }
+sorted_classes = our.sort_by { |word| head.index(word) || 10_000 }
 File.open("sorted_classes.txt", "w") { |f| f.write(sorted_classes.join("\n")) }
 ```
 
-Then, you can grab these sorted classes, update the position of your own classes (you’ll find them near the end) and 
-move them to the appropriate sections of the YAML config file. 
+Then, you can grab these sorted classes, update the position of your own classes (you’ll find them near the end of
+the `sorted_classes.txt` file) and move all of them to the appropriate sections of the YAML config file.
+
+## Running the script
+
+Of course, you can run the script manually, like so:
+
+```sh
+bin/tailwind_sorter.rb app/views/my_template.html.slim
+```
+
+The script finds all css classes and reorders them in-place in the file.
+
+You can also reorder classes in all templates in your project:
+
+```sh
+find ./ -name '*.slim' -exec bin/tailwind_sorter.rb {} \;
+```
+
+## Running automatically via your IDE / editor
+
+Perhaps the best way to run the script is using your editor or IDE. Many editors provide the possibility to watch your
+edited files and **run arbitrary command when they are changed / saved**.
+
+We use Tailwind sorter this way, the script is triggered by ”file watchers“ configured in RubyMine and it works great.
+Have a look at the wiki for a guide to set up such integration.
+
+## Guarding sort order via Overcommit
+
+We use [Overcommit](https://github.com/sds/overcommit) to guard a common set of rules configured in our project upon
+each commit. Here, we provide
+a [simple pre-commit hook](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.git-hooks/pre_commit/check_css_classes_order.rb)
+and a sample
+[configuration in the `.overcommit.yml` file](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.overcommit.yml). 
+The hook calls the Tailwind sorter with the `-w` argument, asking it to not change the file but only print the
+ordering problems found.
 
 ## Running tests
 
@@ -95,7 +134,9 @@ Finished in 0.34583 seconds (files took 0.07635 seconds to load)
 13 examples, 0 failures
 ```
 
-## But I heard ruby is slow. Is this fast enough?
+## Answers for the curious
+
+### But I heard ruby is slow. Is this fast enough?
 
 When we initially reordered CSS classes in all our templates (~900 Slim files) with the script changing nearly 4000
 lines, the whole process took less than 30 seconds. This makes the processing speed of approximately 30 files per
