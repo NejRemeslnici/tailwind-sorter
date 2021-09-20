@@ -67,10 +67,12 @@ There are two important places to configure in the YAML file:
 
 Unknown (i.e. custom) classes will be **ordered first by default**. If you want them ordered last, replace
 the [`default_index`](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/bin/tailwind_sorter.rb#L20) parameter
-in the script with a big-enough number.
+in the script with a big-enough number. We recommend ordering custom classes first though as in our opinion such classes
+usually bear more important meanings than the Tailwind ones and this setup also makes it easier to spot typos in class
+names.
 
-The default sort order of the classes resembles the one of Headwind which, in turn, was inspired by the order of the
-sections in the [official Tailwind documentation](https://tailwindcss.com/docs).
+The default sort order of the classes resembles the one of Headwind which, in turn, seems to be inspired by the order of
+the sections in the [official Tailwind documentation](https://tailwindcss.com/docs).
 
 ### Adding your unique set of Tailwind classes
 
@@ -119,9 +121,9 @@ We use [Overcommit](https://github.com/sds/overcommit) to guard a common set of 
 each commit. Here, we provide
 a [simple pre-commit hook](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.git-hooks/pre_commit/check_css_classes_order.rb)
 and a sample
-[configuration in the `.overcommit.yml` file](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.overcommit.yml#L31). 
-The hook calls Tailwind sorter with the `-w` argument, asking it to not change the file but only print the
-ordering problems found.
+[configuration in the `.overcommit.yml` file](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.overcommit.yml#L31)
+. The hook calls Tailwind sorter with the `-w` argument, asking it to not change the file but only print the ordering
+problems found.
 
 ## Running tests
 
