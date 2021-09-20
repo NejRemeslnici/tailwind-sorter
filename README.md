@@ -49,7 +49,7 @@ be [tweaked in the script](https://github.com/NejRemeslnici/tailwind-sorter/blob
 
 The script has **no dependencies**, apart from ruby (tested on ruby 2.6+) and its stdlib.
 
-There are currently **no plans to make this a gem** as the code and especially the configuration is expected to be
+There are currently **no plans to make this a ruby gem** as the code and especially the configuration is expected to be
 customized to fully suit your needs and we are not ready to support a generic tool with defaults for everyone.
 
 ## Configuration
