@@ -77,6 +77,8 @@ names.
 The default sort order of the classes resembles the one of Headwind which, in turn, seems to be inspired by the order of
 the sections in the [official Tailwind documentation](https://tailwindcss.com/docs).
 
+More details aboug the configuration file can be found in [the wiki](https://github.com/NejRemeslnici/tailwind-sorter/wiki/The-config-file-explanation).
+
 ### Adding your unique set of Tailwind classes
 
 The script works best if you only include the classes that you really use in your project. Once you grab all the classes
