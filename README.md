@@ -12,6 +12,8 @@ The script is a standalone command that can work in two ways:
 Out of the box the script supports sorting classes in [Slim templates](http://slim-lang.com/) but can be configured for
 anything else. The script also removes duplicate classes.
 
+<img src="img/tailwind_sorter_intro.gif" alt="Automatically ordering CSS classes upon file saving"></img>
+
 Please read the accompanying article on dev.to for more details, if interested.
 
 ## Why?
