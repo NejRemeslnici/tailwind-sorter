@@ -36,7 +36,7 @@ solution. This problem is even larger if you’ve added
 [custom utility classes](https://tailwindcss.com/docs/adding-new-utilities) to your project.
 
 Above all, it is **surprisingly easy** to create a custom sorting script – the one we use and present here is only
-~110 lines. So, take this script and config as a **template for you to revise and adopt**.
+~110 lines. So, take this script and config as a **template for you to revise and adapt**.
 
 ## Installation
 
@@ -82,19 +82,19 @@ More details aboug the configuration file can be found in [the wiki](https://git
 ### Adding your unique set of Tailwind classes
 
 The script works best if you only include the classes that you really use in your project. Once you grab all the classes
-e.g. from your production CSS bundle, you can partially reorder them e.g. using the following ruby snippet. Suppose you
+e.g. from your [purged](https://tailwindcss.com/docs/optimizing-for-production) / [JIT-ed](https://tailwindcss.com/docs/just-in-time-mode) production CSS bundle, you can initially reorder them using the following ruby snippet. Suppose you
 have the ”default“ Tailwind classes sorted (taken e.g. from 
 [here](https://github.com/avencera/rustywind/blob/master/src/defaults.rs)), one per line, in
-the `default_classes.txt` file and your own (unordered) classes in `our_classes.txt`. Then the reordering could be along these lines:
+the `default_classes.txt` file and your own (unordered) classes in `our_classes.txt`. Then the sorting could go along these lines:
 
 ```ruby
 head = File.readlines("default_classes.txt").map(&:strip)
 our = File.readlines("our_classes.txt").map(&:strip)
-sorted_classes = our.sort_by { |word| head.index(word) || 10_000 }
+sorted_classes = our.sort_by { |css_class| head.index(css_class) || 10_000 }
 File.open("sorted_classes.txt", "w") { |f| f.write(sorted_classes.join("\n")) }
 ```
 
-Then, you can grab these sorted classes, update the position of your own classes (you’ll find them near the end of
+Then, you can grab these sorted classes, update the position of your own custom classes (you’ll find them near the end of
 the `sorted_classes.txt` file) and move all of them to the appropriate sections of the YAML config file.
 
 ## Running the script
