@@ -15,7 +15,7 @@ anything else. The script also removes duplicate classes.
 _This is what it looks like when Tailwind sorter is auto-run upon saving a changed template file in the RubyMine IDE:_
 <img src="img/tailwind_sorter_intro.gif" alt="Automatically ordering CSS classes upon file saving"></img>
 
-Please read the accompanying article on dev.to for more details, if interested.
+Please read the [accompanying post on dev.to](https://dev.to/nejremeslnici/tailwind-css-class-sorter-the-custom-way-35g5) for more details, if interested.
 
 ## Why?
 
