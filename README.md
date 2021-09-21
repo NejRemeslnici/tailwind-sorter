@@ -4,7 +4,7 @@
 
 The script is a standalone command that can work in two ways:
 
-- it can edit the given file in place or
+- it can edit the given file in place (especially useful when hooked up to a file changes watcher) or
 - it can just generate warning messages suitable for [Overcommit](https://github.com/sds/overcommit),
   [Lefthook](https://github.com/evilmartians/lefthook) or any other similar system (or people, if that’s what you
   prefer).
