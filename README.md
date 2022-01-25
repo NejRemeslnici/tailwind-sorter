@@ -21,12 +21,13 @@ Please read the [accompanying post on dev.to](https://dev.to/nejremeslnici/tailw
 
 We are aware of the other good solutions to sorting Tailwind classes but we’ve hit some limit in each of them:
 
+- [The official Tailwind Prettier plugin](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) is great but does 
+  not support all template formats, such as [Slim](http://slim-lang.com/).
 - [Headwind](https://github.com/heybourn/headwind) is VS Code-only but we needed something in RubyMine and Overcommit,
   too.
 - There are ports to the environments we need
   ([Tailwind Formatter](https://plugins.jetbrains.com/plugin/13376-tailwind-formatter/) JetBrains plugin,
-  [RustyWind](https://github.com/avencera/rustywind) CLI tool) but none of these fully suit our needs, especially since
-  we use [Slim](http://slim-lang.com/) templates in our project and need different regexps to search for the classes.
+  [RustyWind](https://github.com/avencera/rustywind) CLI tool) but none of these support non-standard template formats.
   Also, we like to sort our Tailwind classes a bit differently than Headwind et al. default to.
 
 In our opinion, especially since the [JIT mode](https://tailwindcss.com/docs/just-in-time-mode) has been introduced to
