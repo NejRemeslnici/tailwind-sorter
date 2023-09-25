@@ -21,7 +21,7 @@ Please read the [accompanying post on dev.to](https://dev.to/nejremeslnici/tailw
 
 We are aware of the other good solutions to sorting Tailwind classes but we’ve hit some limit in each of them:
 
-- [The official Tailwind Prettier plugin](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) is great but does 
+- [The official Tailwind Prettier plugin](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) is great but does
   not support all template formats, such as [Slim](http://slim-lang.com/).
 - [Headwind](https://github.com/heybourn/headwind) is VS Code-only but we needed something in RubyMine and Overcommit,
   too.
@@ -78,13 +78,13 @@ names.
 The default sort order of the classes resembles the one of Headwind which, in turn, seems to be inspired by the order of
 the sections in the [official Tailwind documentation](https://tailwindcss.com/docs).
 
-More details aboug the configuration file can be found in [the wiki](https://github.com/NejRemeslnici/tailwind-sorter/wiki/The-config-file-explanation).
+More details about the configuration file can be found in [the wiki](https://github.com/NejRemeslnici/tailwind-sorter/wiki/The-config-file-explanation).
 
 ### Adding your unique set of Tailwind classes
 
 The script works best if you only include the classes that you really use in your project. Once you grab all the classes
 e.g. from your [purged](https://tailwindcss.com/docs/optimizing-for-production) / [JIT-ed](https://tailwindcss.com/docs/just-in-time-mode) production CSS bundle, you can initially reorder them using the following ruby snippet. Suppose you
-have the ”default“ Tailwind classes sorted (taken e.g. from 
+have the ”default“ Tailwind classes sorted (taken e.g. from
 [here](https://github.com/avencera/rustywind/blob/master/src/defaults.rs)), one per line, in
 the `default_classes.txt` file and your own (unordered) classes in `our_classes.txt`. Then the sorting could go along these lines:
 
