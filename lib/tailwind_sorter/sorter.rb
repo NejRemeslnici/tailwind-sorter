@@ -92,8 +92,8 @@ module TailwindSorter
       success && changed ? FileUtils.mv(outfile, file) : File.unlink(outfile)
     end
 
-    def sort(file_name, warn_only: false)
-      config = YAML.load_file(File.join(__dir__, "../config/tailwind_sorter.yml"))
+    def sort(file_name, warn_only: false, config_file: "config/tailwind_sorter.yml")
+      config = YAML.load_file(config_file)
 
       file_extension = File.extname(file_name)
 
