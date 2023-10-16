@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require "bundler"
+Bundler.require
+
 require "tailwind_sorter/sorter"
 
 warn_only = false
