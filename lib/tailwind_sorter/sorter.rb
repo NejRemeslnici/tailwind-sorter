@@ -1,4 +1,5 @@
 require "tempfile"
+require "yaml"
 
 module TailwindSorter
   class Sorter
@@ -68,7 +69,7 @@ module TailwindSorter
             # puts orig_keys.inspect
             # puts sorted_keys.inspect
             if orig_keys != sorted_keys
-              puts("#{file}:#{line_number}:CSS classes are not sorted well. Please run 'bin/tailwind_sorter.rb #{file}'.")
+              puts("#{file}:#{line_number}:CSS classes are not sorted well. Please run 'tailwind_sorter #{file}'.")
             end
           else
             orig_line = line.dup unless changed
@@ -93,8 +94,10 @@ module TailwindSorter
     end
 
     def sort(file_name, warn_only: false, config_file: "config/tailwind_sorter.yml")
-      config = YAML.load_file(config_file)
+      raise ArgumentError, "File '#{file_name}' does not exist" unless file_name && File.exist?(file_name)
+      raise ArgumentError, "Configuration file '#{config_file}' does not exist" unless config_file && File.exist?(config_file)
 
+      config = YAML.load_file(config_file)
       file_extension = File.extname(file_name)
 
       regexps = config["regexps"].select { |_k, v| v["file_extension"] == file_extension }
@@ -105,15 +108,9 @@ module TailwindSorter
                               variants_order: config["variants_order"],
                               warn_only:)
     end
+
+    def self.sort(...)
+      new.sort(...)
+    end
   end
-
-# is this run from Overcommit?
-# warn_only = false
-# if ARGV.first == "-w"
-  # warn_only = true
-  # ARGV.shift
-# end
-#
-# file_name = ARGV.first
-
 end

@@ -21,10 +21,10 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir["{app,lib}/**/*", "spec/components/previews/**/*", "Rakefile", "README.md"]
+    Dir["{exe,lib}/**/*", "Rakefile", "README.md"]
   end
 
   spec.bindir = "exe"
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.executables << "tailwind_sorter"
   spec.require_paths = ["lib"]
 end
