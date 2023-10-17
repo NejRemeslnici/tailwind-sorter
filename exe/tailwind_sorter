@@ -17,7 +17,7 @@ while (arg = ARGV.shift)
 end
 
 begin
-  TailwindSorter::Sorter.sort(file_name, warn_only: warn_only, config_file: config_file)
+  TailwindSorter::Sorter.run(file_name, warn_only: warn_only, config_file: config_file)
 rescue ArgumentError => e
   STDERR.puts e.message
   exit 1

@@ -93,7 +93,7 @@ module TailwindSorter
       success && changed ? FileUtils.mv(outfile, file) : File.unlink(outfile)
     end
 
-    def sort(file_name, warn_only: false, config_file: "config/tailwind_sorter.yml")
+    def run(file_name, warn_only: false, config_file: "config/tailwind_sorter.yml")
       raise ArgumentError, "File '#{file_name}' does not exist" unless file_name && File.exist?(file_name)
       raise ArgumentError, "Configuration file '#{config_file}' does not exist" unless config_file && File.exist?(config_file)
 
@@ -109,8 +109,8 @@ module TailwindSorter
                               warn_only:)
     end
 
-    def self.sort(...)
-      new.sort(...)
+    def self.run(...)
+      new.run(...)
     end
   end
 end

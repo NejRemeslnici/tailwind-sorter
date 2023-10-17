@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Customizable TailwindCSS classes sorter"
   spec.description = "Simple but customizable sorter for TailwindCSS classes"
   spec.homepage = "https://github.com/NejRemeslnici/tailwind-sorter"
+  spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["allowed_push_host"] = "https://github.com"
