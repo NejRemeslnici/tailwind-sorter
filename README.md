@@ -1,8 +1,8 @@
 # Tailwind sorter
 
-**A ruby script to sort the [Tailwind CSS](https://tailwindcss.com) classes in your templates _the custom way_.**
+**A ruby gem to sort the [Tailwind CSS](https://tailwindcss.com) classes in your templates _the custom way_.**
 
-The script is a standalone command that can work in two ways:
+The gem contains a standalone executable script that can work in two ways:
 
 - it can edit the given file in place (especially useful when hooked up to a file changes watcher) or
 - it can just generate warning messages suitable for [Overcommit](https://github.com/sds/overcommit),
@@ -41,17 +41,35 @@ Above all, it is **surprisingly easy** to create a custom sorting script – the
 
 ## Installation
 
-Just grab the two files from
-here: [`tailwind_sorter.rb`](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/bin/tailwind_sorter.rb) is the
-executable ruby script
-and [`tailwind_sorter.yml`](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/config/tailwind_sorter.yml) is
-its configuration file. By default, the configuration file is expected to reside in the `config` directory but this can
-be [tweaked in the script](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/bin/tailwind_sorter.rb#L94).
+Since version 0.3, the script has been packed into a gem so that it can be used directly from ruby as well as a standalone script (now a binstub). If you just want to grab the original ruby script, have a look at the [`original-script` tag](https://github.com/NejRemeslnici/tailwind-sorter/tree/original-script).
 
-The script has **no dependencies**, apart from ruby (tested on ruby 2.6+) and its stdlib.
 
-There are currently **no plans to make this a ruby gem** as the code and especially the configuration is expected to be
-customized to fully suit your needs and we are not ready to support a generic tool with defaults for everyone.
+### Installing the gem
+
+Install it directly:
+
+```
+gem install tailwind-sorter
+```
+
+or put it in your gemfile
+
+```
+# Gemfile
+group :development do
+  gem "tailwind-sorter"
+end
+```
+
+Create a binstub, i.e. a standalone executable script for the sorter:
+
+```sh
+$ bundle binstubs tailwind-sorter
+```
+
+This will create a `bin/tailwind_sorter` binstub file.
+
+The gem has **no dependencies**, apart from ruby (tested on ruby 3.0+) and its stdlib.
 
 ## Configuration
 
@@ -69,11 +87,7 @@ There are two important places to configure in the YAML file:
   ordered towards the end of line, put the classes in one big group, otherwise split them into any groups you want and
   they will be ordered last in the particular group.
 
-Unknown (i.e. custom) classes will be **ordered first by default**. If you want them ordered last, replace
-the [`default_index`](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/bin/tailwind_sorter.rb#L21) parameter
-in the script with a big-enough number. We recommend ordering custom classes first though as in our opinion such classes
-usually bear more important meanings than the Tailwind ones and this setup also makes it easier to spot typos in class
-names.
+Unknown (i.e. custom) classes will be **ordered first by default**. If you want them ordered last, you'll have to resort to using the original script and replacing the [`default_index`](https://github.com/NejRemeslnici/tailwind-sorter/blob/original-script/bin/tailwind_sorter.rb#L20) parameter in it with a big-enough number. We recommend ordering custom classes first though as in our opinion such classes usually bear more important meanings than the Tailwind ones and this setup also makes it easier to spot typos in class names.
 
 The default sort order of the classes resembles the one of Headwind which, in turn, seems to be inspired by the order of
 the sections in the [official Tailwind documentation](https://tailwindcss.com/docs).
@@ -103,15 +117,15 @@ the `sorted_classes.txt` file) and move all of them to the appropriate sections 
 Of course, you can run the script manually, like so:
 
 ```sh
-bin/tailwind_sorter.rb app/views/my_template.html.slim
+bin/tailwind_sorter app/views/my_template.html.slim
 ```
 
 The script finds all css classes and reorders them in-place in the file.
 
-You can also reorder classes in all templates in your project:
+You can tweak the configuration file path instead of the default `config/tailwind_sorter.yml` with the `-c` parameter:
 
 ```sh
-find ./ -name '*.slim' -exec bin/tailwind_sorter.rb {} \;
+bin/tailwind_sorter -c path/to/my/config_file.yml app/views/my_template.html.slim
 ```
 
 ## Running automatically via your IDE / editor
@@ -131,6 +145,16 @@ and a sample
 [configuration in the `.overcommit.yml` file](https://github.com/NejRemeslnici/tailwind-sorter/blob/main/.overcommit.yml#L31)
 . The hook calls Tailwind sorter with the `-w` argument, asking it to not change the file but only print the ordering
 problems found.
+
+## Running the sorter from ruby code
+
+To run the sorter from ruby code, use the following line:
+
+```ruby
+TailwindSorter::Sorter.run("app/views/my_template.html.slim")
+```
+
+You can also optionally pass in ome arguments such as `warn_only: true` to only show  warning instead of overwriting the file or `config_file: "path/to/my/config_file.yml"` for custom config path.
 
 ## Running tests
 
