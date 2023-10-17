@@ -1,5 +1,6 @@
 require "spec_helper"
 require "fileutils"
+require "bundler"
 
 RSpec.describe "tailwind_sorter" do
   let(:test_file) { "tmp/tailwind_sorter_test.slim" }
@@ -15,7 +16,7 @@ RSpec.describe "tailwind_sorter" do
       end
 
       Bundler.with_unbundled_env do
-        system("bin/tailwind_sorter.rb", file)
+        system("exe/tailwind_sorter", file)
       end
 
       file_content
@@ -83,7 +84,7 @@ RSpec.describe "tailwind_sorter" do
       end
 
       Bundler.with_unbundled_env do
-        system("bin/tailwind_sorter.rb", "-w", file)
+        system("exe/tailwind_sorter", "-w", file)
       end
     end
 
@@ -93,7 +94,7 @@ RSpec.describe "tailwind_sorter" do
 
     it "prints an error when css classes order is not proper" do
       expect { run_tailwind_sorter_in_warning_mode(".rounded.my-4.block") }.to(
-        output(/^#{test_file}:1:CSS classes are not sorted properly/).to_stdout_from_any_process
+        output(/^#{test_file}:1:CSS classes are not sorted well/).to_stdout_from_any_process
       )
     end
   end
