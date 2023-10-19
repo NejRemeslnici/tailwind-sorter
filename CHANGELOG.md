@@ -1,3 +1,7 @@
+### 0.3.1
+
+Return warnings when called from ruby code in warn_only mode.
+
 ### 0.3.0
 
 First public release of the gemified version of Tailwind sorter.
