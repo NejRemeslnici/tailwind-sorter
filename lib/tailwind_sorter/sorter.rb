@@ -34,6 +34,7 @@ module TailwindSorter
     def sort_classes(file, regexps:, variants_order:, classes_order:, default_index: 0, warn_only: false)
       class_groups = classes_order.keys
       sort_order = classes_order.values.flatten
+      warnings = []
 
       infile = File.open(file)
       outfile = Tempfile.create("#{File.basename(file)}.sorted")
@@ -69,7 +70,9 @@ module TailwindSorter
             # puts orig_keys.inspect
             # puts sorted_keys.inspect
             if orig_keys != sorted_keys
-              puts("#{file}:#{line_number}:CSS classes are not sorted well. Please run 'tailwind_sorter #{file}'.")
+              warning = "#{file}:#{line_number}:CSS classes are not sorted well. Please run 'tailwind_sorter #{file}'."
+              warnings << warning
+              puts(warning)
             end
           else
             orig_line = line.dup unless changed
@@ -82,6 +85,8 @@ module TailwindSorter
       end
 
       success = true
+
+      warnings
 
     rescue StandardError
       success = false
