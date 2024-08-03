@@ -1,3 +1,7 @@
+### Current
+
+- Add Github Action for tests
+
 ### 0.3.1
 
 Return warnings when called from ruby code in warn_only mode.
