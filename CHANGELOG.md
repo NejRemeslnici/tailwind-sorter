@@ -2,6 +2,7 @@
 
 - Add Github Action for tests
 - Fix LOAD_PATH issues when running tests
+- Remove support for ruby 3.0
 
 ### 0.3.1
 
