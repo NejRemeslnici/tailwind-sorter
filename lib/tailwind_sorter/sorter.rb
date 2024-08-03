@@ -88,7 +88,8 @@ module TailwindSorter
 
       warnings
 
-    rescue StandardError
+    rescue StandardError => e
+      warn "An error occurred: #{e}"
       success = false
 
     ensure
