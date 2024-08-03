@@ -1,6 +1,7 @@
 ### Current
 
 - Add Github Action for tests
+- Fix LOAD_PATH issues when running tests
 
 ### 0.3.1
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 
-require "tailwind_sorter/sorter"
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require "tailwind_sorter"
 
 warn_only = false
 config_file = "config/tailwind_sorter.yml"
