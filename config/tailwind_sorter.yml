@@ -239,6 +239,7 @@ classes_order:
     - font-extrabold
     - font-black
     - tracking-tight
+    - tracking-wide
     - leading-6
     - leading-7
     - leading-8
@@ -288,7 +289,7 @@ classes_order:
     - /bg-black\/\d+/
     - bg-white
     - /bg-white\/\d+/
-    - /bg-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)\/\d+/
+    - /bg-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+\/?\d*/
 
     # TW text colors
     - text-inherit
@@ -298,7 +299,7 @@ classes_order:
     - /text-black\/\d+/
     - text-white
     - /text-white\/\d+/
-    - /text-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)\/\d+/
+    - /text-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+\/?\d*/
   borders:
     - rounded-sm
     - rounded
@@ -366,7 +367,7 @@ classes_order:
     - /border-black\/\d+/
     - border-white
     - /border-white\/\d+/
-    - /border-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)\/\d+/
+    - /border-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+\/?\d*/
   effects:
     - shadow
     - shadow-sm
