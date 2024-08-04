@@ -15,32 +15,52 @@ module TailwindSorter
     # Constructs the sorting key for sorting CSS classes in the following way:
     #
     # group_index, variant1_index, variant2_index, class_index
-    # "sm:focus:flex"   "01,01,11,0010"
-    # "flex"            "01,00,00,0010"
-    # "nr-custom-class" "00,00,00,0000"
-    def sorting_key(css_class_with_variants, variants_order:, classes_order:, class_groups:, sort_order:, default_index: 0)
+    # "sm:focus:flex" -> "01,01,11,0010"
+    # "flex"          -> "01,00,00,0010"
+    # "custom-class"  -> "00,00,00,0000"
+    def sorting_key(css_class_with_variants, variants_order:, classes_order:, class_groups:, default_index: 0)
       *variants, css_class = css_class_with_variants.split(":")
+
+      matching_index_in_group = nil
+      matching_group = class_groups.find do |group|
+        matching_index_in_group ||= classes_order[group].index { _1 === css_class }
+      end
+
       key = [
-        format("%02d", class_groups.index { |group| classes_order[group].include?(css_class) } || default_index),
+        format("%02d", matching_group && class_groups.index(matching_group) || default_index),
         format("%02d", variants_order.index(variants[0]) || default_index),
         format("%02d", variants_order.index(variants[1]) || default_index),
-        format("%04d", sort_order.index(css_class) || default_index)
+        format("%04d", matching_index_in_group || default_index)
       ].join(",")
 
       # puts "#{css_class_with_variants} #{key}"
       key
     end
 
+    def convert_regexps!(classes_order)
+      classes_order.each do |group, class_patterns|
+        class_patterns.map! do |class_or_pattern|
+          if !(patterns = class_or_pattern.match(%r{\A/(.*)/\z}).to_a).empty?
+            Regexp.new(/\A#{patterns.last}\z/)
+          else
+            class_or_pattern
+          end
+        end
+      end
+
+      classes_order
+    end
+
     def sort_classes(file, regexps:, variants_order:, classes_order:, default_index: 0, warn_only: false)
+      convert_regexps!(classes_order)
       class_groups = classes_order.keys
-      sort_order = classes_order.values.flatten
       warnings = []
 
       infile = File.open(file)
       outfile = Tempfile.create("#{File.basename(file)}.sorted")
 
       calculate_sorting_key = lambda do |css_class_with_variants|
-        sorting_key(css_class_with_variants, variants_order:, classes_order:, class_groups:, sort_order:, default_index:)
+        sorting_key(css_class_with_variants, variants_order:, classes_order:, class_groups:, default_index:)
       end
 
       changed = false
