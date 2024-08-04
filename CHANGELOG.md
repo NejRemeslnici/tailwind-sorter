@@ -1,4 +1,4 @@
-### Current
+### 0.4.0
 
 - Add support for regular expressions in configuration for class ordering (#3)
 
