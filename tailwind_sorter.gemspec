@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir["{exe,lib}/**/*", "Rakefile", "README.md"]
+    Dir["{exe,lib}/**/*", "Rakefile", "README.md", "CHANGELOG.md"]
   end
 
   spec.bindir = "exe"
