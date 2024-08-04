@@ -4,6 +4,7 @@ require "bundler"
 
 RSpec.describe "tailwind_sorter" do
   let(:test_file) { "tmp/tailwind_sorter_test.slim" }
+  let(:config_file) { "spec/support/basic_config.yml" }
 
   after do
     FileUtils.rm_f(test_file)
@@ -16,7 +17,7 @@ RSpec.describe "tailwind_sorter" do
       end
 
       Bundler.with_unbundled_env do
-        system("exe/tailwind_sorter", file)
+        system("exe/tailwind_sorter", "-c", config_file, file)
       end
 
       file_content
@@ -27,20 +28,42 @@ RSpec.describe "tailwind_sorter" do
     end
 
     context "with regexp 'slim_html'" do
-      it "does basic class reordering" do
-        expect(run_tailwind_sorter(".rounded.my-4.block")).to eq(".block.my-4.rounded")
+      describe "class reordering with pure strings" do
+        it "does basic class reordering" do
+          expect(run_tailwind_sorter(".rounded.my-4.block")).to eq(".block.my-4.rounded")
+        end
+
+        it "orders unknown classes first" do
+          expect(run_tailwind_sorter(".rounded.my-4.block.nr-class")).to eq(".nr-class.block.my-4.rounded")
+        end
+
+        it "orders variants to the end of the same group" do
+          expect(run_tailwind_sorter(".sm:block.block.lg:my-4.my-8")).to eq(".block.sm:block.my-8.lg:my-4")
+        end
+
+        it "orders multiple variants" do
+          expect(run_tailwind_sorter(".focus:hover:sm:block.my-4")).to eq(".sm:hover:focus:block.my-4")
+        end
       end
 
-      it "orders unknown classes first" do
-        expect(run_tailwind_sorter(".rounded.my-4.block.nr-class")).to eq(".nr-class.block.my-4.rounded")
-      end
+      describe "class reordering with regexps in classes_order config" do
+        let(:config_file) { "spec/support/regexp_config.yml" }
 
-      it "orders variants to the end of the same group" do
-        expect(run_tailwind_sorter(".sm:block.block.lg:my-4.my-8")).to eq(".block.sm:block.my-8.lg:my-4")
-      end
+        it "does basic class reordering" do
+          expect(run_tailwind_sorter(".rounded.my-4.block")).to eq(".block.my-4.rounded")
+        end
 
-      it "orders multiple variants" do
-        expect(run_tailwind_sorter(".focus:hover:sm:block.my-4")).to eq(".sm:hover:focus:block.my-4")
+        it "orders unknown classes first" do
+          expect(run_tailwind_sorter(".rounded.my-4.block.nr-class")).to eq(".nr-class.block.my-4.rounded")
+        end
+
+        it "orders variants to the end of the same group" do
+          expect(run_tailwind_sorter(".sm:block.block.lg:my-4.my-8")).to eq(".block.sm:block.my-8.lg:my-4")
+        end
+
+        it "orders multiple variants" do
+          expect(run_tailwind_sorter(".focus:hover:sm:block.my-4")).to eq(".sm:hover:focus:block.my-4")
+        end
       end
 
       it "removes duplicate classes" do
@@ -84,7 +107,7 @@ RSpec.describe "tailwind_sorter" do
       end
 
       Bundler.with_unbundled_env do
-        system("exe/tailwind_sorter", "-w", file)
+        system("exe/tailwind_sorter", "-w", "-c", config_file, file)
       end
     end
 

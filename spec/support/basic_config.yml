@@ -1,0 +1,52 @@
+regexps:
+  slim_html:
+    regexp: '^(?![^=]*(?: {|[(;]))(?<before>\s*[a-z0-9_#-]*)(?<classes>(?:\.[a-z0-9_:\/-]+){2,})'
+    file_extension: .slim
+    class_prefix: .
+    class_splitter: ''
+  ruby_class_attribute:
+    regexp: '(?<before>class: ")(?<classes>(?: *[a-z0-9_:\/-]+){2,})'
+    file_extension: .slim
+    class_prefix: ''
+    class_splitter: ' '
+variants_order:
+  - custom # this is a special variant so that only custom variants have index 0
+  - sm
+  - md
+  - lg
+  - xl
+  - 2xl
+  - first
+  - last
+  - odd
+  - even
+  - hover
+  - focus
+  - focus-visible
+  - group-hover
+  - group-focus
+  - focus-within
+  - disabled
+  - checked
+  - active
+  - visited
+  - dark
+  - motion-safe
+  - motion-reduce
+
+classes_order:
+  # this is a special group so that custom classes get index 0
+  custom:
+    - custom
+  layout:
+    - static
+    - fixed
+    - block
+  spacing:
+    - my-4
+    - my-8
+    - my-px
+  borders:
+    - rounded-sm
+    - rounded
+    - rounded-lg
