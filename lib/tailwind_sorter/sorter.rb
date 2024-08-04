@@ -3,6 +3,10 @@ require "yaml"
 
 module TailwindSorter
   class Sorter
+    def initialize
+      @sorting_keys_cache = {}
+    end
+
     # reorders multiple variants, e.g.: "focus:sm:block" -> "sm:focus:block"
     def sort_variants(css_class_with_variants, variants_order:)
       *variants, css_class = css_class_with_variants.split(":")
@@ -19,6 +23,8 @@ module TailwindSorter
     # "flex"          -> "01,00,00,0010"
     # "custom-class"  -> "00,00,00,0000"
     def sorting_key(css_class_with_variants, variants_order:, classes_order:, class_groups:, default_index: 0)
+      return @sorting_keys_cache[css_class_with_variants] if @sorting_keys_cache[css_class_with_variants]
+
       *variants, css_class = css_class_with_variants.split(":")
 
       matching_index_in_group = nil
@@ -34,7 +40,7 @@ module TailwindSorter
       ].join(",")
 
       # puts "#{css_class_with_variants} #{key}"
-      key
+      @sorting_keys_cache[css_class_with_variants] = key
     end
 
     def convert_regexps!(classes_order)
