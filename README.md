@@ -163,6 +163,12 @@ The script requires the configuration file to be present in `config/tailwind_sor
 bin/tailwind_sorter -c path/to/my/config_file.yml app/views/my_template.html.slim
 ```
 
+Multiple files can be processed in a single run:
+
+```sh
+bin/tailwind_sorter app/views/my_template.html.slim app/views/another_template.html.slim
+```
+
 ## Running automatically via your IDE / editor
 
 Perhaps the best way to run the script is using your editor or IDE. Many editors provide the possibility to watch your

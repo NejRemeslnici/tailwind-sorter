@@ -121,4 +121,26 @@ RSpec.describe "tailwind_sorter" do
       )
     end
   end
+
+  context "when multiple files are given" do
+    let(:file1) { "tmp/tailwind_sorter_test1.slim" }
+    let(:file2) { "tmp/tailwind_sorter_test2.slim" }
+
+    after do
+      FileUtils.rm_f(file1)
+      FileUtils.rm_f(file2)
+    end
+
+    it "sorts classes in all files" do
+      File.open(file1, "w") { _1.print(".rounded.my-4.block") }
+      File.open(file2, "w") { _1.print(".my-8.rounded.fixed") }
+
+      Bundler.with_unbundled_env do
+        system("exe/tailwind_sorter", "-c", config_file, file1, file2)
+      end
+
+      expect(File.read(file1).strip).to eq(".block.my-4.rounded")
+      expect(File.read(file2).strip).to eq(".fixed.my-8.rounded")
+    end
+  end
 end

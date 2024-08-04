@@ -15,12 +15,15 @@ while (arg = ARGV.shift)
   when "-c"
     config_file = ARGV.shift
   else
-    file_name = arg
+    ARGV.unshift(arg)
+    break
   end
 end
 
 begin
-  TailwindSorter::Sorter.run(file_name, warn_only: warn_only, config_file: config_file)
+  while (file_name = ARGV.shift)
+    TailwindSorter::Sorter.run(file_name, warn_only: warn_only, config_file: config_file)
+  end
 rescue ArgumentError => e
   STDERR.puts e.message
   exit 1

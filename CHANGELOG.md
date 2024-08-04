@@ -1,3 +1,7 @@
+### 0.4.1
+
+Add support for processing multiple files at once.
+
 ### 0.4.0
 
 - Add support for regular expressions in configuration for class ordering (#3)
