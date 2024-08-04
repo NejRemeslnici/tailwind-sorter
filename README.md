@@ -12,8 +12,11 @@ The gem contains a standalone executable script that can work in two ways:
 Out of the box the script supports sorting classes in [Slim templates](http://slim-lang.com/) but can be configured for
 anything else. The script also removes duplicate classes.
 
-_This is what it looks like when Tailwind sorter is auto-run upon saving a changed template file in the RubyMine IDE:_
-<img src="img/tailwind_sorter_intro.gif" alt="Automatically ordering CSS classes upon file saving"></img>
+_This is what it looks like when Tailwind sorter is auto-run upon saving a changed template file in VS Code:_
+<img src="img/tailwind_sorter_vscode.gif" alt="Automatically ordering CSS classes upon file saving in VS Code"></img>
+
+_And similarly in RubyMine IDE:_
+<img src="img/tailwind_sorter_rubymine.gif" alt="Automatically ordering CSS classes upon file saving in RubyMine"></img>
 
 Please read the [accompanying post on dev.to](https://dev.to/nejremeslnici/tailwind-css-class-sorter-the-custom-way-35g5) for more details, if interested.
 
@@ -37,12 +40,11 @@ solution. This problem is even larger if you’ve added
 [custom utility classes](https://tailwindcss.com/docs/adding-new-utilities) to your project.
 
 Above all, it is **surprisingly easy** to create a custom sorting script – the one we use and present here is only
-~110 lines. So, take this script and config as a **template for you to revise and adapt**.
+~150 lines. So, take this script and especially its config as a **template for you to revise and adapt**.
 
 ## Installation
 
-Since version 0.3, the script has been packed into a gem so that it can be used directly from ruby as well as a standalone script (now a binstub). If you just want to grab the original ruby script, have a look at the [`original-script` tag](https://github.com/NejRemeslnici/tailwind-sorter/tree/original-script).
-
+Since version 0.3, the script has been packed into a gem so that it can be used directly from ruby as well as a standalone script (now a binstub).
 
 ### Installing the gem
 
@@ -69,7 +71,7 @@ $ bundle binstubs tailwind-sorter
 
 This will create a `bin/tailwind_sorter` binstub file.
 
-The gem has **no dependencies**, apart from ruby (tested on ruby 3.0+) and its stdlib.
+The gem has **no dependencies**, apart from ruby (tested on ruby 3.1+) and its stdlib.
 
 ## Configuration
 
@@ -78,28 +80,61 @@ configured.
 
 There are two important places to configure in the YAML file:
 
-- **regular expressions** to match the classes in your files: out of the box, the script matches classes in the Slim
-  format (such as `section#flash-messages.hidden.mt-4`) and classes in the context of the `class` attribute in ruby /
-  Rails helpers (`link_to "E-shop", eshop_path, class: "no-underline font-bold red-100")`,
+- **regular expressions** that tell the Tailwind sorter where to find CSS classes to sort: out of the box, the script
+  matches classes in the Slim format (such as `section#flash-messages.hidden.mt-4`) and classes in the context of the
+  `class` attribute in ruby / Rails helpers (`link_to "E-shop", eshop_path, class: "no-underline font-bold red-100")`,
 
 - **CSS classes order and grouping**: the `classes_order` section in the YAML file determines the order in which the
   classes will be sorted. If you want the classes with Tailwind variants (such as `sm:`, `hover:` etc.) to always be
   ordered towards the end of line, put the classes in one big group, otherwise split them into any groups you want and
   they will be ordered last in the particular group.
 
-Unknown (i.e. custom) classes will be **ordered first by default**. If you want them ordered last, you'll have to resort to using the original script and replacing the [`default_index`](https://github.com/NejRemeslnici/tailwind-sorter/blob/original-script/bin/tailwind_sorter.rb#L20) parameter in it with a big-enough number. We recommend ordering custom classes first though as in our opinion such classes usually bear more important meanings than the Tailwind ones and this setup also makes it easier to spot typos in class names.
+  You have two options when specifying classes in this config section: pure strings and regular expressions:
 
-The default sort order of the classes resembles the one of Headwind which, in turn, seems to be inspired by the order of
-the sections in the [official Tailwind documentation](https://tailwindcss.com/docs).
+  -  You can always just **list the CSS class names** in the config. This style gives you a full control over the ordering and it is the fastest option as well. The downside of it is that you'll find yourself having to update the config more often as new Tailwind classes variants emerge in your project and / or Tailwind itself:
 
-More details about the configuration file can be found in [the wiki](https://github.com/NejRemeslnici/tailwind-sorter/wiki/The-config-file-explanation).
+      ```yaml
+      classes_order:
+        spacing:
+          ...
+          - py-2
+          - py-4
+          - py-8
+          ...
+      ```
+
+  - Or, you can use **regular expressions** to cover all variants of a Tailwind class at once. A regular expression in
+    this part of the config is specified as a string delimited by slashes. Note that the
+    [`\A` and `\z` boundaries](https://docs.ruby-lang.org/en/master/Regexp.html#class-Regexp-label-Boundary+Anchors) are
+    automatically added to the expression so that it always matches the whole class name, not just part of it. Using regular expressions to sort classes shortens your configuration greatly but makes it a bit harder to understand.
+
+    ```yaml
+    classes_order:
+      spacing:
+        ...
+        - /py-\d+/
+        ...
+    ```
+
+  - And, of course, you can also freely mix these two approaches.
+
+Unknown (e.g. your custom) classes will be **ordered first**. If you want to sort them differently, you will have to add them
+to the config file to their proper place under `classes_order`. We recommend ordering custom classes first though as in
+our opinion such classes usually bear more important meanings than the Tailwind ones and this setup also makes it easier
+to spot typos in class names.
+
+The default sort order of the classes in the bundled config file resembles the one of Headwind which, in turn, seems to
+be inspired by the order of the sections in the [official Tailwind documentation](https://tailwindcss.com/docs).
+
+More details about the configuration file can be found in
+[the wiki](https://github.com/NejRemeslnici/tailwind-sorter/wiki/The-config-file-explanation).
 
 ### Adding your unique set of Tailwind classes
 
 The script works best if you only include the classes that you really use in your project. Once you grab all the classes
-e.g. from your [purged](https://tailwindcss.com/docs/optimizing-for-production) / [JIT-ed](https://tailwindcss.com/docs/just-in-time-mode) production CSS bundle, you can initially reorder them using the following ruby snippet. Suppose you
+e.g. from your [JIT-ed](https://tailwindcss.com/docs/just-in-time-mode) production CSS bundle, you can initially reorder them using the following ruby snippet. Suppose you
 have the ”default“ Tailwind classes sorted (taken e.g. from
-[here](https://github.com/avencera/rustywind/blob/master/src/defaults.rs)), one per line, in
+[here](https://github.com/avencera/rustywind/blob/master/rustywind-core/src/defaults.rs), one per line, in
 the `default_classes.txt` file and your own (unordered) classes in `our_classes.txt`. Then the sorting could go along these lines:
 
 ```ruby
@@ -114,7 +149,7 @@ the `sorted_classes.txt` file) and move all of them to the appropriate sections 
 
 ## Running the script
 
-Of course, you can run the script manually, like so:
+You can run the script manually like so:
 
 ```sh
 bin/tailwind_sorter app/views/my_template.html.slim
@@ -122,7 +157,7 @@ bin/tailwind_sorter app/views/my_template.html.slim
 
 The script finds all css classes and reorders them in-place in the file.
 
-You can tweak the configuration file path instead of the default `config/tailwind_sorter.yml` with the `-c` parameter:
+The script requires the configuration file to be present in `config/tailwind_sorter.yml` by default. You can tweak the configuration file path with the `-c` parameter:
 
 ```sh
 bin/tailwind_sorter -c path/to/my/config_file.yml app/views/my_template.html.slim
@@ -161,10 +196,10 @@ You can also optionally pass in ome arguments such as `warn_only: true` to only 
 ```sh
 bundle install # to install the rspec gem
 bundle exec rspec
-.............
+.................
 
-Finished in 0.34583 seconds (files took 0.07635 seconds to load)
-13 examples, 0 failures
+Finished in 1.08 seconds (files took 0.03424 seconds to load)
+17 examples, 0 failures
 ```
 
 ## Answers for the curious
