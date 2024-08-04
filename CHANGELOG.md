@@ -1,8 +1,13 @@
 ### Current
 
-- Add Github Action for tests
-- Fix LOAD_PATH issues when running tests
-- Remove support for ruby 3.0
+- Add support for regular expressions in configuration for class ordering (#3)
+
+  So instead of having to specify all variants of a certain Tailwind class, now you can cover all of them with a
+  regular expression.
+- Cache sorting keys during processing (speeds up sorting a file with repeating CSS classes).
+- Fix LOAD_PATH issues when running tests (#2).
+- Add Github Action for tests, enhance tests.
+- Require ruby 3.1+.
 
 ### 0.3.1
 
