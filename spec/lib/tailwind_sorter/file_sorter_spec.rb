@@ -30,7 +30,7 @@ RSpec.describe TailwindSorter::FileSorter do
     end
 
     context "with regexp 'slim_html'" do
-      describe "class reordering with pure strings" do
+      describe "class reordering with pure strings in the config" do
         it "does basic class reordering" do
           expect(run_tailwind_sorter(".rounded.my-4.block")).to eq(".block.my-4.rounded")
         end
