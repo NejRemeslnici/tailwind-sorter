@@ -2,12 +2,11 @@
 
 **A ruby gem to sort the [Tailwind CSS](https://tailwindcss.com) classes in your templates _the custom way_.**
 
-The gem contains a standalone executable script that can work in two ways:
+The gem contains a sorting library and a standalone executable script that can work in two ways:
 
 - it can edit the given file in place (especially useful when hooked up to a file changes watcher) or
 - it can just generate warning messages suitable for [Overcommit](https://github.com/sds/overcommit),
-  [Lefthook](https://github.com/evilmartians/lefthook) or any other similar system (or people, if that’s what you
-  prefer).
+  [Lefthook](https://github.com/evilmartians/lefthook) or any other similar system.
 
 Out of the box the script supports sorting classes in [Slim templates](http://slim-lang.com/) but can be configured for
 anything else. The script also removes duplicate classes.
@@ -192,20 +191,36 @@ problems found.
 To run the sorter from ruby code, use the following line:
 
 ```ruby
-TailwindSorter::Sorter.run("app/views/my_template.html.slim")
+TailwindSorter.sort_file("app/views/my_template.html.slim")
 ```
 
-You can also optionally pass in ome arguments such as `warn_only: true` to only show  warning instead of overwriting the file or `config_file: "path/to/my/config_file.yml"` for custom config path.
+You can also optionally pass in some arguments such as `warn_only: true` to only show  warning instead of overwriting the file or `config_file: "path/to/my/config_file.yml"` for custom config path.
+
+## Sorting Tailwind classes from ruby code
+
+You can also use this gem as a library and sort a single string with Tailwind classes:
+
+```ruby
+>> TailwindSorter.sort("my-4 block absolute")
+=> "absolute block my-4"
+```
+
+Optionally also with a custom config file:
+
+```ruby
+TailwindSorter.sort("my-4 block absolute", config_file: "path/to/my/config_file.yml")
+```
+
 
 ## Running tests
 
 ```sh
 bundle install # to install the rspec gem
 bundle exec rspec
-.................
+..................................
 
-Finished in 1.08 seconds (files took 0.03424 seconds to load)
-17 examples, 0 failures
+Finished in 0.28774 seconds (files took 0.06508 seconds to load)
+34 examples, 0 failures
 ```
 
 ## Answers for the curious
@@ -215,3 +230,5 @@ Finished in 1.08 seconds (files took 0.03424 seconds to load)
 When we initially reordered CSS classes in all our templates (~900 Slim files) with the script changing nearly 4000
 lines, the whole process took less than 30 seconds. This makes the processing speed of approximately 30 files per
 second. Judge for yourself if this is fast enough for your needs or not.
+
+**Update**: this is a benchmark of an old version of the gem which supported sorting only a single file at once. Since version 0.4.1 the script can process multiple files in a single run and as this skips repeated loading of ruby it speeds up the bulk sorting process in an order of magnitude.

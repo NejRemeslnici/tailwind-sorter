@@ -1,3 +1,25 @@
+### 0.5.0
+
+Restructure the gem completely:
+
+- extract `FileSorter` (that can sort classes in a file) and a new `StringSorter` (that can sort classes in a string)
+- clean up the code into their own modules / classes
+- add a DSL for running the sorters from ruby code
+- enhance the tests
+
+**BREAKING CHANGE**: if you called the file sorter from ruby like this:
+
+```ruby
+TailwindSorter::Sorter.run(file_name, warn_only: true/false, config_file: "some_config")
+```
+
+you need to change the call to the new syntax:
+
+```ruby
+TailwindSorter.sort_file(file_name, warn_only: true/false, config_file: "some_config")
+
+```
+
 ### 0.4.1
 
 Add support for processing multiple files at once.
