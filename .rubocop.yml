@@ -1,0 +1,148 @@
+# This is the configuration used to check the rubocop source code.
+# see http://rubocop.readthedocs.io/en/latest/configuration/
+# and http://rubocop.readthedocs.io/en/latest/cops_style/
+
+# This overrides default config at https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml.
+
+# requires for external / custom cops
+require:
+  - rubocop-rspec
+
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  NewCops: enable
+  TargetRubyVersion: 3.1
+
+Layout/LineLength:
+  Max: 120
+  AllowHeredoc: true
+  AllowURI: true
+  AutoCorrect: true
+  IgnoreCopDirectives: true
+  AllowedPatterns:
+    - ' # +'
+    - '^ +(it|context) "+'
+
+Bundler/GemVersion:
+  Enabled: false
+
+Gemspec/RequireMFA:
+  Enabled: false
+
+Layout/EmptyLinesAroundExceptionHandlingKeywords:
+  Enabled: false # we allow space before rescue / ensure
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'lib/tasks/*'
+    - 'Rakefile'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'spec/**/*'
+  CountComments: false
+  Max: 200
+
+Metrics/CyclomaticComplexity:
+  Max: 15
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 30
+
+Metrics/ModuleLength:
+  CountComments: false
+  Max: 200
+
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Style/AccessorGrouping:
+  EnforcedStyle: separated
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*.*'
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/Encoding:
+  Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Style/OpenStructUse:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+# Rubocop-RSpec rules
+RSpec/ContextWording:
+  Prefixes:
+    - when
+    - with
+    - without
+    - before
+    - after
+    - for
+    - if
+    - unless
+
+RSpec/DescribedClass:
+  EnforcedStyle: explicit
+
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/NestedGroups:
+  Max: 4

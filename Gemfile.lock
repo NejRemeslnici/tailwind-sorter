@@ -1,7 +1,19 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    ast (2.4.2)
     diff-lcs (1.4.4)
+    json (2.7.2)
+    language_server-protocol (3.17.0.3)
+    parallel (1.25.1)
+    parser (3.3.4.1)
+      ast (~> 2.4.1)
+      racc
+    racc (1.8.1)
+    rainbow (3.1.1)
+    regexp_parser (2.9.2)
+    rexml (3.3.4)
+      strscan
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -15,6 +27,24 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.2)
+    rubocop (1.65.1)
+      json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
+      parallel (~> 1.10)
+      parser (>= 3.3.0.2)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 2.4, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.32.0)
+      parser (>= 3.3.1.0)
+    rubocop-rspec (3.0.4)
+      rubocop (~> 1.61)
+    ruby-progressbar (1.13.0)
+    strscan (3.1.0)
+    unicode-display_width (2.5.0)
 
 PLATFORMS
   ruby
@@ -22,6 +52,8 @@ PLATFORMS
 
 DEPENDENCIES
   rspec
+  rubocop
+  rubocop-rspec
 
 BUNDLED WITH
    2.5.17
