@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
-lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+lib = File.expand_path("#{File.dirname(__FILE__)}/../lib")
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
 require "tailwind_sorter"
 
 warn_only = false
-config_file = "config/tailwind_sorter.yml"
+config_file = TailwindSorter::Config::DEFAULT_CONFIG_FILE
 
 while (arg = ARGV.shift)
   case arg
@@ -22,9 +22,9 @@ end
 
 begin
   while (file_name = ARGV.shift)
-    TailwindSorter::Sorter.run(file_name, warn_only: warn_only, config_file: config_file)
+    TailwindSorter.sort_file(file_name, warn_only:, config_file:)
   end
 rescue ArgumentError => e
-  STDERR.puts e.message
+  warn e.message
   exit 1
 end

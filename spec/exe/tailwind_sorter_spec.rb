@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "fileutils"
 require "bundler"
 
-RSpec.describe "tailwind_sorter" do
+RSpec.describe "tailwind_sorter integration tests" do # rubocop:disable RSpec/DescribeClass
   let(:test_file) { "tmp/tailwind_sorter_test.slim" }
   let(:config_file) { "spec/support/basic_config.yml" }
 
@@ -27,76 +29,8 @@ RSpec.describe "tailwind_sorter" do
       File.read(file).strip
     end
 
-    context "with regexp 'slim_html'" do
-      describe "class reordering with pure strings" do
-        it "does basic class reordering" do
-          expect(run_tailwind_sorter(".rounded.my-4.block")).to eq(".block.my-4.rounded")
-        end
-
-        it "orders unknown classes first" do
-          expect(run_tailwind_sorter(".rounded.my-4.block.nr-class")).to eq(".nr-class.block.my-4.rounded")
-        end
-
-        it "orders variants to the end of the same group" do
-          expect(run_tailwind_sorter(".sm:block.block.lg:my-4.my-8")).to eq(".block.sm:block.my-8.lg:my-4")
-        end
-
-        it "orders multiple variants" do
-          expect(run_tailwind_sorter(".focus:hover:sm:block.my-4")).to eq(".sm:hover:focus:block.my-4")
-        end
-      end
-
-      describe "class reordering with regexps in classes_order config" do
-        let(:config_file) { "spec/support/regexp_config.yml" }
-
-        it "does basic class reordering" do
-          expect(run_tailwind_sorter(".rounded.my-4.block")).to eq(".block.my-4.rounded")
-        end
-
-        it "orders unknown classes first" do
-          expect(run_tailwind_sorter(".rounded.my-4.block.nr-class")).to eq(".nr-class.block.my-4.rounded")
-        end
-
-        it "orders variants to the end of the same group" do
-          expect(run_tailwind_sorter(".sm:block.block.lg:my-4.my-8")).to eq(".block.sm:block.my-8.lg:my-4")
-        end
-
-        it "orders multiple variants" do
-          expect(run_tailwind_sorter(".focus:hover:sm:block.my-4")).to eq(".sm:hover:focus:block.my-4")
-        end
-      end
-
-      it "removes duplicate classes" do
-        expect(run_tailwind_sorter(".block.my-4.block")).to eq(".block.my-4")
-      end
-
-      it "reorders classes up to equal sign (inline ruby)" do
-        expect(run_tailwind_sorter(".my-4.block = link_to(...)")).to eq(".block.my-4 = link_to(...)")
-      end
-
-      it "ignores lines in that appear to be CSS" do
-        expect(run_tailwind_sorter(".my-4.block {")).to eq(".my-4.block {")
-      end
-
-      it "ignores lines in that appear to be JS function call" do
-        expect(run_tailwind_sorter("something.block.element.hide()")).to eq("something.block.element.hide()")
-      end
-
-      it "ignores lines in that appear to be JS line" do
-        expect(run_tailwind_sorter("something.block.element;")).to eq("something.block.element;")
-      end
-    end
-
-    context "with regexp 'ruby_class_attribute'" do
-      it "does basic class reordering" do
-        expect(run_tailwind_sorter('class: "rounded my-4 block"')).to eq('class: "block my-4 rounded"')
-      end
-
-      it "reorders classes only before interpolation" do
-        expect(run_tailwind_sorter('class: "rounded my-4 block #{...} mx-8"')).to(
-          eq('class: "block my-4 rounded #{...} mx-8"')
-        )
-      end
+    it "does basic class reordering" do
+      expect(run_tailwind_sorter(".rounded.my-4.block")).to eq(".block.my-4.rounded")
     end
   end
 
@@ -109,10 +43,6 @@ RSpec.describe "tailwind_sorter" do
       Bundler.with_unbundled_env do
         system("exe/tailwind_sorter", "-w", "-c", config_file, file)
       end
-    end
-
-    it "prints nothing when css classes order is proper" do
-      expect { run_tailwind_sorter_in_warning_mode(".block.my-4.rounded") }.not_to output.to_stdout_from_any_process
     end
 
     it "prints an error when css classes order is not proper" do
